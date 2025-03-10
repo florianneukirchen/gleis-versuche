@@ -48,6 +48,7 @@ interessant = {
     "Weiche C": "4473850_5336225.copc.laz",
     "Weiche D": "4473850_5336150.copc.laz",
     "Für template": "4475250_5340950.copc.laz",
+    "Rand": "4474075_5333550.copc.laz",
 }
 
 
@@ -87,7 +88,7 @@ interessant = {
 31 Ding neben Gleis
 32 Wände
 33 Viele Gleise
-34 Fangschienen und mehr
+34 Anfang Weiche
 35 OLA gleiche Höhe wie Gleis
 36 4 Gleise
 37 Y
