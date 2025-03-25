@@ -50,7 +50,9 @@ interessant = {
     "Für template": "4475250_5340950.copc.laz",
     "Rand": "4474075_5333550.copc.laz",
     "Extrem viele Punkte run24": "4474800_5332150.copc.laz",
-    "Auch viele Gleise": "4480875_5356950.copc.laz",
+    "Viele Gleise 2": "4480875_5356950.copc.laz",
+    "Kreuzung linker Teil": "4480900_5356950.copc.laz",
+    "Kreuzung rechter Teil": "4480925_5356950.copc.laz",
 }
 
 
