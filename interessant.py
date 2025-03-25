@@ -49,6 +49,8 @@ interessant = {
     "Weiche D": "4473850_5336150.copc.laz",
     "Für template": "4475250_5340950.copc.laz",
     "Rand": "4474075_5333550.copc.laz",
+    "Extrem viele Punkte run24": "4474800_5332150.copc.laz",
+    "Auch viele Gleise": "4480875_5356950.copc.laz",
 }
 
 
@@ -92,6 +94,11 @@ interessant = {
 35 OLA gleiche Höhe wie Gleis
 36 4 Gleise
 37 Y
-
+38 Weiche C
+39 Weiche D
+40 Für template
+41 Rand
+42 Extrem viele Punkte run24
+43 Auch viele Gleise
 
 """
