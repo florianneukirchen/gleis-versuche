@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="80mm"
+   height="80mm"
+   viewBox="0 0 80 80"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="Schiene.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:zoom="0.73940797"
+     inkscape:cx="154.1774"
+     inkscape:cy="27.048667"
+     inkscape:window-width="1920"
+     inkscape:window-height="1048"
+     inkscape:window-x="1920"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2">
+    <sodipodi:guide
+       position="108.38934,29.708886"
+       orientation="1,0"
+       id="guide4463" />
+    <sodipodi:guide
+       position="132.67155,48.134535"
+       orientation="1,0"
+       id="guide4465" />
+    <sodipodi:guide
+       position="177.12651,27.73735"
+       orientation="1,0"
+       id="guide1211" />
+    <sodipodi:guide
+       position="39.977942,21.804259"
+       orientation="1,0"
+       id="guide2940" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path50103" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Mstart"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mstart"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(0.4,0,0,0.4,4,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path50100" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lend"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(-0.8,0,0,-0.8,-10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path50097" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lstart"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(0.8,0,0,0.8,10,0)"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:1pt"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path50094" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow2Lstart"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow2Lstart"
+       inkscape:isstock="true">
+      <path
+         transform="matrix(1.1,0,0,1.1,1.1,0)"
+         d="M 8.7185878,4.0337352 -2.2072895,0.01601326 8.7185884,-4.0017078 c -1.7454984,2.3720609 -1.7354408,5.6174519 -6e-7,8.035443 z"
+         style="fill:context-stroke;fill-rule:evenodd;stroke:context-stroke;stroke-width:0.625;stroke-linejoin:round"
+         id="path50112" />
+    </marker>
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Ebene 3"
+     style="display:inline" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Ebene 2"
+     style="display:inline">
+    <path
+       style="fill:#cccccc;fill-opacity:1;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 13.006708,73.365625 -0.09077,-3.068322 c 0,0 0.0017,-0.444637 0.238984,-0.679347 0.727685,-0.719834 3.36111,-0.715567 4.395742,-0.851874 1.03463,-0.13633 2.460319,-0.37994 3.200588,-0.454107 0.740268,-0.0742 11.033823,-3.796549 11.033823,-3.796549 0,0 0.94968,-0.482517 1.571697,-0.929674 0.622012,-0.44717 0.902386,-0.711677 1.39287,-1.414034 0.490485,-0.702364 0.824788,-1.783098 1.043103,-2.645625 0.218314,-0.862524 0.720216,-6.018974 1.006957,-11.933471 0.286735,-5.914497 -0.01733,-15.436753 -0.151038,-16.692157 -0.133756,-1.255401 -0.519332,-3.388289 -0.978122,-4.182246 -0.350871,-0.607207 -0.512726,-1.002814 -0.864441,-1.294911 -0.501015,-0.41607 -8.672317,-3.264132 -8.672317,-3.264132 0,0 -0.562206,-0.13176 -0.784169,-0.514457 -0.389548,-0.671637 0.438008,-10.59036 0.438008,-10.59036 0,0 -0.05299,-1.5434207 1.126792,-2.9337748 1.240456,-1.461851 2.123268,-2.130988 4.230068,-2.4651149 2.466234,-0.391127 7.455846,-0.401357 9.182463,-0.401357 1.726616,0 5.415719,-0.0847 7.411638,0.237687 2.000174,0.3230899 3.049603,0.3728599 3.744547,0.7919869 0.760628,0.458747 2.391557,1.688161 2.763897,2.458075 0.372334,0.7699271 0.52546,0.7480071 0.659216,1.6491108 0.133755,0.901104 0.492351,10.64412 0.492351,10.64412 l -0.012,0.761427 c -0.0043,0.274367 -9.294687,3.573559 -9.294687,3.573559 0,0 -1.088417,0.816244 -1.46535,1.965288 -0.376931,1.149034 -0.550964,3.083252 -0.584746,4.466236 -0.02504,1.025864 -0.365471,7.581475 -0.28379,12.602788 0.08168,5.02132 0.505496,13.659432 0.654416,14.627946 0.14892,0.968514 0.815017,2.643275 1.499377,3.355452 0.684358,0.712194 1.757869,1.748561 2.780156,2.085238 1.022288,0.336687 11.325065,3.999296 11.325065,3.999296 0,0 1.97562,0.355778 2.758367,0.397908 0.782749,0.0421 3.371043,0.319539 3.371043,0.319539 0,0 0.639392,0.0546 0.868366,0.436967 0.440899,0.736087 0.512044,4.368216 0.512044,4.368216 0,0 -0.106285,0.295387 -0.512885,0.393877 -0.240536,0.0546 -1.295453,0.0571 -1.295453,0.0571 l -51.167142,-0.11377 c 0,0 -1.028926,0.0311 -1.269087,-0.213457 -0.312987,-0.31868 -0.275616,-0.753067 -0.275616,-0.753067 z"
+       id="path1216"
+       sodipodi:nodetypes="ccssscsssscsscscssssssscscsssssscscsccccscc" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="Ebene 5"
+     style="display:inline" />
+</svg>
