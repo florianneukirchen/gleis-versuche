@@ -53,6 +53,7 @@ interessant = {
     "Viele Gleise 2": "4480875_5356950.copc.laz",
     "Kreuzung linker Teil": "4480900_5356950.copc.laz",
     "Kreuzung rechter Teil": "4480925_5356950.copc.laz",
+    "Weiche abseits":"4480825_5356950.copc.laz",
 }
 
 
@@ -101,6 +102,9 @@ interessant = {
 40 Für template
 41 Rand
 42 Extrem viele Punkte run24
-43 Auch viele Gleise
+43 Viele Gleise 2
+44 Kreuzung linker Teil
+45 Kreuzung rechter Teil
+46 Weiche abseits
 
 """
