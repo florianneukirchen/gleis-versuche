@@ -54,6 +54,7 @@ interessant = {
     "Kreuzung linker Teil": "4480900_5356950.copc.laz",
     "Kreuzung rechter Teil": "4480925_5356950.copc.laz",
     "Weiche abseits":"4480825_5356950.copc.laz",
+    "Drei":"4473825_5336300.copc.laz",
 }
 
 
@@ -106,5 +107,6 @@ interessant = {
 44 Kreuzung linker Teil
 45 Kreuzung rechter Teil
 46 Weiche abseits
+47 Drei
 
 """
