@@ -55,6 +55,7 @@ interessant = {
     "Kreuzung rechter Teil": "4480925_5356950.copc.laz",
     "Weiche abseits":"4480825_5356950.copc.laz",
     "Drei":"4473825_5336300.copc.laz",
+    "Gestrüpp": "4474650_5332200.copc.laz",
 }
 
 
@@ -108,5 +109,6 @@ interessant = {
 45 Kreuzung rechter Teil
 46 Weiche abseits
 47 Drei
+48 Gestrüpp
 
 """
