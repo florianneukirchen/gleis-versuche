@@ -12,7 +12,7 @@ run14_temp = "/media/riannek/minimax/gleis/temp_run14"
 gpkg_points = []
 
 gpkg = ogr.Open(os.path.join(run14_temp, "temp.gpkg"))
-layer = gpkg.GetLayerByName("multi points")
+layer = gpkg.GetLayerByName("multipoints")
 
 for feature in layer:
     geom = feature.GetGeometryRef()
