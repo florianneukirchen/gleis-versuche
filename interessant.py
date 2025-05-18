@@ -56,6 +56,10 @@ interessant = {
     "Weiche abseits":"4480825_5356950.copc.laz",
     "Drei":"4473825_5336300.copc.laz",
     "Gestrüpp": "4474650_5332200.copc.laz",
+    "Weiche Rumgeeier": "4473700_5337675.copc.laz",
+    "Nicht befahren 1": "4481400_5357025.copc.laz",
+    "Nicht befahren 2": "4481025_5356975.copc.laz", # Linie zwischen den Gleisen
+    "Nicht befahren 3": "4474275_5339875.copc.laz",
 }
 
 
@@ -110,5 +114,8 @@ interessant = {
 46 Weiche abseits
 47 Drei
 48 Gestrüpp
+49 Weiche Rumgeeier
+50 Nicht befahren 1
+51 Nicht befahren 2
 
 """
