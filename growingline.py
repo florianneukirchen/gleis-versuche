@@ -219,6 +219,7 @@ class GrowingLine:
         first_fid = None
         first_xyz = None 
         first_direction = None
+        first_iteration = True
 
         while True:
             xyz, directions, fids = self.points_in_direction(layer)
@@ -232,9 +233,16 @@ class GrowingLine:
                     # If we can't reverse the head, we are done
                     break
                 continue
+
             labels = ransac_lines(xyz, threshold=0.05, max_iterations=20)
-            remove_points(fids[labels == -1], layer)
             max_label = labels.max()
+
+            # If the start point is in a switch, it causes all kinds of problems 
+            if first_iteration and max_label > 0:
+                raise StartInSwitchError
+            first_iteration = False
+
+            remove_points(fids[labels == -1], layer)
 
             # Check if we reached the end of a switch
             if self.in_switch and max_label == 0:
@@ -288,7 +296,14 @@ class GrowingLine:
     
     def __repr__(self):
         return f"GrowingLine(id={self.id}, head_fid={self.head_fid}, points={len(self.points)})"
-    
+
+
+class StartInSwitchError(Exception):
+    """Exception raised if start point is in a switch"""
+
+    def __init__(self, message="Start point is in a switch, prone to bugs."):
+        self.message = message
+        super().__init__(self.message)    
 
 
 def model_fitness(xyz, directions, labels=None):
