@@ -180,6 +180,7 @@ class GrowingLine:
             switchline.head_fid = first_fid
             switchline.head_xyz = first_xyz
             switchline.head_direction = first_direction
+            switchline.points = [first_xyz]
             switchline.start_fid = None
 
         return cut_active_line
