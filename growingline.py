@@ -98,7 +98,7 @@ class GrowingLine:
         return xyz, directions, fids
 
 
-    def add_switch(self, new_fid, head_xyz,  new_direction):
+    def add_switch(self, new_fid, head_xyz,  new_direction, first_point):
 
 
         if self.in_switch:
@@ -112,6 +112,7 @@ class GrowingLine:
             self.in_switch = True
             switchline = GrowingLine(
                 new_fid, head_xyz, new_direction)
+            switchline.points = [first_point]
             self.switch.append(switchline)
 
 
@@ -126,6 +127,9 @@ class GrowingLine:
         self.in_switch = False
         switchline = self.switch[-1]
 
+        length = np.linalg.norm(switchline.head_xyz - switchline.points[0])
+        print("Length of switch line:", length, "points:", len(switchline.points))
+
         between_heads = self.head_xyz - switchline.head_xyz
         # Check if the active line ends in the switch 
         # it happens if we approach the switch from the curved track
@@ -135,8 +139,8 @@ class GrowingLine:
 
         if cut_active_line:
             print("Distance from head to switch line head:", distance_from_head)
-            length = np.linalg.norm(switchline.head_xyz - switchline.start_xyz)
-            print("Length of switch line:", length)
+            
+            
 
             go_back = distance_from_head + length + 8
             print("Going back:", go_back)
@@ -183,7 +187,7 @@ class GrowingLine:
             switchline.points = [first_xyz]
             switchline.start_fid = None
 
-        return cut_active_line
+
 
     def reverse_head(self, active_line=True):
         """Reverse the head of the line
@@ -281,7 +285,7 @@ class GrowingLine:
                         self.points.extend(pruned)
                     else:
                         # This is the other rail in a switch (or false positive)
-                        self.add_switch(fids_cluster[-1], cluster[-1], directions_cluster[-1])
+                        self.add_switch(fids_cluster[-1], cluster[-1], directions_cluster[-1], cluster[0])
 
                         # Keep first point for the cut method
                         first_fid = fids_cluster[0]
