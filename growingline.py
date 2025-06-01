@@ -360,9 +360,16 @@ def distance_points_to_line(points, p0, direction):
     distances = np.linalg.norm(cross, axis=1) / np.linalg.norm(direction)
     return distances
 
-def ransac_lines(points, threshold=0.1, min_inliers=3, max_iterations=20, max_lines=2):
+def ransac_lines(points, threshold=0.1, min_inliers=None, max_iterations=20, max_lines=2):
     points = np.asarray(points)
     N = len(points)
+
+    if min_inliers is None:
+        if N > 15: 
+            min_inliers = 6
+        else:
+            min_inliers = 3
+
     labels = np.full(N, -1)  # Initialize all as noise
     remaining_idx = np.arange(N)
 
