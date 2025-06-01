@@ -207,7 +207,7 @@ class GrowingLine:
         if active_line:
             self.start_fid = None
         
-        print("Reversed head")
+        print("Reversed head", self.head_fid)
         return True
 
 
@@ -253,11 +253,21 @@ class GrowingLine:
 
             # Check if we reached the end of a switch
             if self.in_switch and max_label == 0:
-                # Use the first point of the last round if cut is on the switchline
-                self.make_cut(first_fid, first_xyz, first_direction)
-                if not self.reverse_head():
-                    # If we can't reverse the head, we are done
-                    break
+                # Check if the switch line is long enough (not false positive)
+                # cut anyway if the active line has label -1 (i.e. it ends here)
+                switchline = self.switch[-1]
+                length = np.linalg.norm(switchline.head_xyz - switchline.points[0])
+                if (length > 5) or (labels[0] == -1):
+                    # Use the first point of the last round if cut is on the switchline
+                    self.make_cut(first_fid, first_xyz, first_direction)
+                    if not self.reverse_head():
+                        # If we can't reverse the head, we are done
+                        break
+                else:
+                    # The switch line is too short, remove it
+                    print("Removing switch line, too short:", length)
+                    self.switch.pop()
+                    self.in_switch = False
             # Add the points to the line(s)
             else:
                 for label in range(max_label + 1):
