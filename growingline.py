@@ -140,8 +140,6 @@ class GrowingLine:
         if cut_active_line:
             print("Distance from head to switch line head:", distance_from_head)
             
-            
-
             go_back = distance_from_head + length + 8
             print("Going back:", go_back)
             reversed_points = self.points[::-1]
@@ -162,6 +160,8 @@ class GrowingLine:
 
             # Reset the switchline
             switchline.reset()
+            if switchline.head_direction @ self.head_direction < 0:
+                switchline.head_direction = -switchline.head_direction
 
             # Cut the line
 
@@ -181,6 +181,8 @@ class GrowingLine:
         else:
             # Set the switchline to the given point (first point of cluster)
             # And make shure it will not reverse
+            if first_direction @ switchline.head_direction < 0:
+                first_direction = -first_direction
             switchline.head_fid = first_fid
             switchline.head_xyz = first_xyz
             switchline.head_direction = first_direction
