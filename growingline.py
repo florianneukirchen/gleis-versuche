@@ -122,22 +122,16 @@ class GrowingLine:
         self.head_direction = self.start_direction 
         self.points = [self.start_xyz]
 
-    def make_cut(self, first_fid, first_xyz, first_direction):
-        print("Making cut in switch")
+    def make_cut(self, cut_active_line, first_fid, first_xyz, first_direction):
+        print("Making cut in active line", cut_active_line)
         self.in_switch = False
         switchline = self.switch[-1]
 
-        length = np.linalg.norm(switchline.head_xyz - switchline.points[0])
-        print("Length of switch line:", length, "points:", len(switchline.points))
-
-        between_heads = self.head_xyz - switchline.head_xyz
-        # Check if the active line ends in the switch 
-        # it happens if we approach the switch from the curved track
-        cut_active_line = (between_heads @ self.head_direction) > -1.5
-        print("Cut active line:", cut_active_line)
-        distance_from_head = np.linalg.norm(between_heads)
-
         if cut_active_line:
+            length = np.linalg.norm(switchline.head_xyz - switchline.points[0])
+            print("Length of switch line:", length, "points:", len(switchline.points))
+            between_heads = self.head_xyz - switchline.head_xyz
+            distance_from_head = np.linalg.norm(between_heads)
             print("Distance from head to switch line head:", distance_from_head)
             
             go_back = distance_from_head + length + 8
@@ -235,7 +229,8 @@ class GrowingLine:
                 # Reverse head or stop if already reversed
                 remove_points(fids, layer)
                 if self.in_switch:
-                    self.make_cut(first_fid, first_xyz, first_direction)
+                    # Make a cut in the switchline
+                    self.make_cut(False, first_fid, first_xyz, first_direction)
                 if not self.reverse_head():
                     # If we can't reverse the head, we are done
                     break
@@ -259,7 +254,8 @@ class GrowingLine:
                 length = np.linalg.norm(switchline.head_xyz - switchline.points[0])
                 if (length > 5) or (labels[0] == -1):
                     # Use the first point of the last round if cut is on the switchline
-                    self.make_cut(first_fid, first_xyz, first_direction)
+                    cut_active_line = not (switchline.head_fid in fids[labels == 0])
+                    self.make_cut(cut_active_line, first_fid, first_xyz, first_direction)
                     if not self.reverse_head():
                         # If we can't reverse the head, we are done
                         break
