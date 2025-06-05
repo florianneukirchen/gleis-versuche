@@ -26,8 +26,8 @@ class GrowingLine:
         self.start_direction = head_direction
         self.start_fid = head_fid
 
-        self.switch = []
-        self.in_switch = False
+        self.switch = None
+        self.next_lines = []
 
         self.points = [head_xyz]
 
@@ -41,9 +41,10 @@ class GrowingLine:
         head_direction = np.array([feature.GetField("eig x"), feature.GetField("eig y"), feature.GetField("eig z")])
         return cls(head_fid, head_xyz, head_direction)
 
+    def in_switch(self):
+        return self.switch is not None 
 
-
-    def points_in_direction(self, layer, distance=10):
+    def points_in_direction(self, layer, switchlayer, distance=10):
         """Read the points in the model direction and sort them
         
         """
@@ -95,94 +96,69 @@ class GrowingLine:
         directions = np.array(directions)[sorted_indices]
         fids = np.array(fids)[sorted_indices]
 
-        return xyz, directions, fids
+        # Read points from switchlayer
+        switches = []
+        switchlayer.ResetReading()
+        switchlayer.SetSpatialFilter(geom)
+        for feature in switchlayer:
+            switches.append(np.array(feature.GetGeometryRef().GetPoint(0)))
+
+        return xyz, directions, fids, switches
 
 
-    def add_switch(self, new_fid, head_xyz,  new_direction, first_point):
+    def add_switchline(self, head_xyz, first_point):
 
-
-        if self.in_switch:
+        if not self.switch is None:
             # Update the switch line
-            switchline = self.switch[-1] 
-            switchline.head_fid = new_fid
-            switchline.head_xyz = head_xyz
-            switchline.head_direction = new_direction
+            self.switch.append(head_xyz)
         else:
-            print("Adding new switch line")
-            self.in_switch = True
-            switchline = GrowingLine(
-                new_fid, head_xyz, new_direction)
-            switchline.points = [first_point]
-            self.switch.append(switchline)
+            self.switch = [first_point, head_xyz]
+
+    def index_closest_point(self, switchpoints):
+
+        active_line = np.vstack(self.points)
+    
+        indices = []
+        distances = []
+
+        for point in switchpoints:
+            print("POINT")
+            print(point)
+            dist = np.linalg.norm(active_line - point, axis=1)
+            idx = np.argmin(dist)
+            distances.append(dist[idx])
+            indices.append(idx)
+
+        # Index with closest distance of any switchpoint
+        distances = np.array(distances)
+        return indices[np.argmin(distances)] 
 
 
-    def reset(self):
-        self.head_fid = self.start_fid
-        self.head_xyz = self.start_xyz
-        self.head_direction = self.start_direction 
-        self.points = [self.start_xyz]
+    def make_cut(self, switchpoints=None):
 
-    def make_cut(self, cut_active_line, first_fid, first_xyz, first_direction):
-        print("Making cut in active line", cut_active_line)
-        self.in_switch = False
-        switchline = self.switch[-1]
 
-        if cut_active_line:
-            length = np.linalg.norm(switchline.head_xyz - switchline.points[0])
-            print("Length of switch line:", length, "points:", len(switchline.points))
-            between_heads = self.head_xyz - switchline.head_xyz
-            distance_from_head = np.linalg.norm(between_heads)
-            print("Distance from head to switch line head:", distance_from_head)
-            
-            go_back = distance_from_head + length + 8
-            print("Going back:", go_back)
-            reversed_points = self.points[::-1]
+        if switchpoints is None: 
+            switchpoints = self.switch
 
-            distances = []
-            cum_sum = 0
-            
-            for i in range(len(reversed_points)-1):
-                distance = np.linalg.norm(reversed_points[i] - reversed_points[i+1])
-                cum_sum += distance
-                distances.append(distance)
-                if cum_sum > go_back:
-                    break
+        cut_index = self.index_closest_point(switchpoints)
+    
+        # Cut the line
+        cut_point = self.points[cut_index]
+        new_points = self.points[cut_index:]
+        self.points = self.points[:cut_index]
 
-            distances = np.array(distances)
-            cut_index = np.argmax(distances) 
-            print("Cut index:", cut_index, "distance", distances[cut_index], "go_back", go_back)
+        new_line = GrowingLine(
+            self.head_fid,
+            self.head_xyz,
+            self.head_direction,
+        )
+        new_line.points = new_points
+        # New line doesn't need to be reversed
+        new_line.start_fid = None
 
-            # Reset the switchline
-            switchline.reset()
-            if switchline.head_direction @ self.head_direction < 0:
-                switchline.head_direction = -switchline.head_direction
-
-            # Cut the line
-
-            self.points = reversed_points[:cut_index:-1]
-            new_points = reversed_points[cut_index::-1]
-
-            new_line = GrowingLine(
-                self.head_fid,
-                self.head_xyz,
-                self.head_direction,
-            )
-            new_line.points = new_points
-            # New line doesn't need to be reversed
-            new_line.start_fid = None
-            self.switch.append(new_line)
-
-        else:
-            # Set the switchline to the given point (first point of cluster)
-            # And make shure it will not reverse
-            if first_direction @ switchline.head_direction < 0:
-                first_direction = -first_direction
-            switchline.head_fid = first_fid
-            switchline.head_xyz = first_xyz
-            switchline.head_direction = first_direction
-            switchline.points = [first_xyz]
-            switchline.start_fid = None
-
+        self.next_lines.append(new_line)
+        self.switch = None
+        return cut_point
 
 
     def reverse_head(self, active_line=True):
@@ -205,34 +181,24 @@ class GrowingLine:
         return True
 
 
-    def get_linestring(self):
-        """Get the linestring of the line
-        
-        """
-        if len(self.points) == 0:
-            return None
-        geom = ogr.Geometry(ogr.wkbLineString25D)
-        for point in self.points:
-            geom.AddPoint(point[0], point[1], point[2])
-        return geom
 
-    def grow(self, layer, linelayer):
-        first_fid = None
-        first_xyz = None 
-        first_direction = None
+    def grow(self, layer, linelayer, switchlayer):
+
         first_iteration = True
 
         while True:
-            xyz, directions, fids = self.points_in_direction(layer)
+            xyz, directions, fids, switches = self.points_in_direction(layer, switchlayer)
             if len(fids) < 3:
                 # These are only 2 new points, not enough for a ransac line
-                # Reverse head or stop if already reversed
                 remove_points(fids, layer)
-                if self.in_switch:
-                    # Make a cut in the switchline
-                    self.make_cut(False, first_fid, first_xyz, first_direction)
+                if self.in_switch():
+                    # Write the head of the line to the switchlayer
+                    geom = ogr.Geometry(ogr.wkbPoint)
+                    geom.AddPoint(self.head_xyz[0], self.head_xyz[1])
+                    add_to_layer(switchlayer, geom)
+
+                # Reverse head or break out of loop if already reversed
                 if not self.reverse_head():
-                    # If we can't reverse the head, we are done
                     break
                 continue
 
@@ -247,23 +213,39 @@ class GrowingLine:
             remove_points(fids[labels == -1], layer)
 
             # Check if we reached the end of a switch
-            if self.in_switch and max_label == 0:
-                # Check if the switch line is long enough (not false positive)
-                # cut anyway if the active line has label -1 (i.e. it ends here)
-                switchline = self.switch[-1]
-                length = np.linalg.norm(switchline.head_xyz - switchline.points[0])
-                if (length > 5) or (labels[0] == -1):
-                    # Use the first point of the last round if cut is on the switchline
-                    cut_active_line = not (switchline.head_fid in fids[labels == 0])
-                    self.make_cut(cut_active_line, first_fid, first_xyz, first_direction)
+            if self.in_switch() and max_label == 0:
+                if labels[0] == -1:
+                    # The active line ended in the switch 
+                    # Check which end of the switchline is closer and write the 
+                    # closest point to the switch layer
+                    #idx = self.index_closest_point([self.switch[0], self.switch[1]])
+                    # closest_point = self.points[idx]
+                    geom = ogr.Geometry(ogr.wkbPoint)
+                    geom.AddPoint(self.head_xyz[0], self.head_xyz[1])
+                    # geom.AddPoint(closest_point[0], closest_point[1])
+                    add_to_layer(switchlayer, geom)
+                    # Reverse head or break out of loop if already reversed
                     if not self.reverse_head():
-                        # If we can't reverse the head, we are done
                         break
                 else:
-                    # The switch line is too short, remove it
-                    print("Removing switch line, too short:", length)
-                    self.switch.pop()
-                    self.in_switch = False
+                    # The switchline ended
+                    # If it was very short, it is a false positive
+                    length = np.linalg.norm(self.switch[0] - self.switch[-1])
+
+                    if length > 5:
+                        point = self.make_cut()
+                        geom = ogr.Geometry(ogr.wkbPoint)
+                        geom.AddPoint(point[0], point[1])
+                        add_to_layer(switchlayer, geom)
+
+                        # Reverse head or break out of loop if already reversed
+                        if not self.reverse_head():
+                            break
+                    else:
+                        # The switch line is too short, remove it
+                        print("Removing switch line, too short:", length)
+                        self.switch = None
+
             # Add the points to the line(s)
             else:
                 for label in range(max_label + 1):
@@ -293,20 +275,39 @@ class GrowingLine:
                         self.points.extend(pruned)
                     else:
                         # This is the other rail in a switch (or false positive)
-                        self.add_switch(fids_cluster[-1], cluster[-1], directions_cluster[-1], cluster[0])
+                        self.add_switchline(cluster[-1], cluster[0])
 
-                        # Keep first point for the cut method
-                        first_fid = fids_cluster[0]
-                        first_xyz = cluster[0]
-                        first_direction = directions_cluster[0]
+
+
+                # Make a cut if there is a switchpoint
+                if len(switches) > 0:
+                    self.make_cut(switches)
+                    # Reverse head or break out of loop if already reversed
+                    if not self.reverse_head():
+                        break
+
+        # Finished Growing
 
         # Add the active line to the layer if it has enough points
         geom = self.get_linestring()
         if geom is not None and geom.GetPointCount() > 10:
-            linelayer_add(linelayer, geom)
+            add_to_layer(linelayer, geom)
 
-        return self.switch
-    
+        return self.next_lines
+
+
+    def get_linestring(self):
+        """Get the linestring of the line
+        
+        """
+        if len(self.points) == 0:
+            return None
+        geom = ogr.Geometry(ogr.wkbLineString25D)
+        for point in self.points:
+            geom.AddPoint(point[0], point[1], point[2])
+        return geom
+
+
     def __repr__(self):
         return f"GrowingLine(id={self.id}, head_fid={self.head_fid}, points={len(self.points)})"
 
@@ -317,6 +318,9 @@ class StartInSwitchError(Exception):
     def __init__(self, message="Start point is in a switch, prone to bugs."):
         self.message = message
         super().__init__(self.message)    
+
+
+
 
 
 def model_fitness(xyz, directions, labels=None):
@@ -467,7 +471,7 @@ def remove_points(fids, layer):
 
     layer.SyncToDisk()
 
-def linelayer_add(layer, geom):
+def add_to_layer(layer, geom):
     feature = ogr.Feature(layer.GetLayerDefn())
     feature.SetGeometry(geom)
     layer.CreateFeature(feature)
