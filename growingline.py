@@ -123,16 +123,19 @@ class GrowingLine:
             active_line = np.vstack(self.unpruned)
         else:
             active_line = np.vstack(self.points)
+
+        # Remove z, calculate in 2D
+        active_line = active_line[:, :2]
     
         indices = []
         distances = []
 
         for point in switchpoints:
-            dist = np.linalg.norm(active_line - point, axis=1)
+            dist = np.linalg.norm(active_line - point[:2], axis=1)
             idx = np.argmin(dist)
             distances.append(dist[idx])
             indices.append(idx)
-
+        print("index unpruned", unpruned)
         print("indices", indices)
         print("distances", distances)
         print(len(self.points),"points")
