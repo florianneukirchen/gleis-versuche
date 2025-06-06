@@ -297,7 +297,8 @@ class GrowingLine:
                         self.head_fid = fids_cluster[offset]
                         if np.array_equal(pruned[0], self.points[-1]):
                             # Remove the first point if it is already in the line
-                            pruned = pruned[1:]  
+                            pruned = pruned[1:] 
+                        check(self.points, pruned) 
                         self.points.extend(pruned)
                     else:
                         # This is the other rail in a switch (or false positive)
