@@ -4,6 +4,7 @@ basedir = "/media/riannek/minimax/gleis"
 run24 = os.path.join(basedir, "2024-08-13/01/run24/01")
 run14 = os.path.join(basedir, "2024-08-14/01/run14/01")
 
+# In CloudCompare um 1°, 2°, 3°, 4° rotiert
 steigung = ["steigung1.laz", "steigung2.laz", "steigung3.laz", "steigung4.laz"]
 
 interessant = {
